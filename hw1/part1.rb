@@ -4,12 +4,21 @@
 
 
 def palindrome?(str)
-	letters = self.downcase.scan(/\w/)
-    letters == letters.reverse
+	letters = str.downcase.scan(/\w/)
+    return letters == letters.reverse
 end
 
 def count_words(str)
-  # YOUR CODE HERE
+  words = str.scan(/\w+/)
+  hash = Hash.new
+  words.each do |word|
+  	if hash.has_key?(word.downcase)
+  		hash[word] += 1
+  	else
+  		hash[word.downcase] = 1
+  	end
+  end
+  return hash
 end
 
 
