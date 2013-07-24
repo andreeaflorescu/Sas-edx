@@ -9,19 +9,6 @@ def sorted(word)
 	return word.split('').sort { |a, b| a.casecmp(b) } .join
 end
 
-# search in the anagram list for a list containing anagram of the
-# given word
-def search_anagram_match(anagram_list, word)
-	last = anagram_list.length - 1
-	for i in 0..last
-		#if the word exist in the i-th anagram list
-		if sorted(anagram_list[i][0]).casecmp(sorted(word)) == 0
-			return i
-		end
-	end
-	return -1
-end
-
 # combine all anagrams from the word array into the anagram list
 # input: ['cars', 'for', 'potatoes', 'racs', 'four', 'scar', 'creams', 'scream'] 
 # output: [ ["cars", "racs", "scar"],
@@ -31,17 +18,12 @@ end
 #           ["creams", "scream"] ]
 def combine_anagrams(words)
 	anagram_list = Array.new
-	words.each do |word|
-		if anagram_list.length == 0
-			anagram_list.push([word])
-		else
-			index = search_anagram_match(anagram_list, word)
-			if index == -1
-				anagram_list.push([word])
-			else
-				anagram_list[index].push(word)
-			end
-		end
+	anagram_list = words.map {|word| sorted(word).downcase}
+	anagram_list.uniq!
+	
+	result = Array.new
+	anagram_list.each do |anagram|
+		result << words.select {|word| sorted(word).casecmp(sorted(anagram)) == 0}
 	end
-	return anagram_list
+	result
 end
